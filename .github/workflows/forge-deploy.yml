@@ -26,13 +26,11 @@ jobs:
         env:
           FORGE_CLI_NONINTERACTIVE: 1
 
-      # Step 1: Forge login with JIRA User and JIRA Token
-      - name: Forge Login
-        run: forge login --email ${{ secrets.JIRA_USER }} --token ${{ secrets.JIRA_TOKEN }} --non-interactive
+      # Step 1: Build the react front
+      - name: Build REACT Front
+        run: cd static/kpi-gadget && npm install --legacy-peer-deps && npm run-script build
         env:
           FORGE_CLI_NONINTERACTIVE: 1
-          FORGE_EMAIL: "${{ secrets.JIRA_USER }}"
-          FORGE_API_TOKEN: "${{ secrets.JIRA_TOKEN }}"
       
       # Step 2: Forge deploy to the chosen environment
       - name: Forge Deploy

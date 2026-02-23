@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react';
 import Form, { Field } from '@atlaskit/form';
 import TextField from '@atlaskit/textfield';
 import Select from '@atlaskit/select';
-import Button, { ButtonGroup } from '@atlaskit/button/new';
+import Button from '@atlaskit/button/new';
+import ButtonGroup from '@atlaskit/button';
 import { view, invoke } from '@forge/bridge';
 
 // Utility function to decode HTML entities (e.g., &eacute; → é)
