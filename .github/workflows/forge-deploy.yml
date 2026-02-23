@@ -1,0 +1,39 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches: [main, master]
+
+jobs:
+  forge-deploy:
+    runs-on: ubuntu-latest
+    environment: development
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+      
+      - name: Install Forge CLI
+        run: npm install -g @forge/cli
+      
+      # Step 1: Forge login with JIRA User and JIRA Token
+      - name: Forge Login
+        run: forge login --email ${{ secrets.JIRA_USER }} --token ${{ secrets.JIRA_TOKEN }} --non-interactive
+        env:
+          FORGE_CLI_NONINTERACTIVE: 1
+      
+      # Step 2: Forge deploy to the chosen environment
+      - name: Forge Deploy
+        run: forge deploy --environment ${{ vars.ENV_NAME }}
+        env:
+          FORGE_CLI_NONINTERACTIVE: 1
+      
+      # Step 3: Forge install with --upgrade argument
+      - name: Forge Install
+        run: forge install --upgrade --environment ${{ vars.ENV_NAME }} --site ${{ vars.JIRA_SITE_NAME }} --product Jira --non-interactive
+        env:
+          FORGE_CLI_NONINTERACTIVE: 1

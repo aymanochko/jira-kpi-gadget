@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Form, { Field } from '@atlaskit/form';
 import TextField from '@atlaskit/textfield';
 import Select from '@atlaskit/select';
-import Button, { ButtonGroup } from '@atlaskit/button';
+import Button, { ButtonGroup } from '@atlaskit/button/new';
 import { view, invoke } from '@forge/bridge';
 
 // Utility function to decode HTML entities (e.g., &eacute; → é)
@@ -45,7 +45,6 @@ function Edit() {
     };
     view.submit(encodedData);
   };
-  const [context, setContext] = useState();
   const [data, setData] = useState(null);
 
   useEffect(() => {
