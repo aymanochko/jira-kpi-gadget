@@ -19,6 +19,9 @@ jobs:
       
       - name: Install Forge CLI
         run: npm install -g @forge/cli@latest
+          
+      - name: Install libsecret
+        run: sudo apt-get update && sudo apt-get install -y libsecret-1-0 libsecret-1-dev
 
       # Step 0: Forge settings 
       - name: Forge Settings
