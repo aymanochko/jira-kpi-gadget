@@ -20,28 +20,32 @@ jobs:
       - name: Install Forge CLI
         run: npm install -g @forge/cli@latest
           
-      - name: Install libsecret
-        run: sudo apt-get update && sudo apt-get install -y libsecret-1-0 libsecret-1-dev
-
       # Step 0: Forge settings 
       - name: Forge Settings
         run: forge settings set usage-analytics false
         env:
           FORGE_CLI_NONINTERACTIVE: 1
+
       # Step 1: Forge login with JIRA User and JIRA Token
       - name: Forge Login
         run: forge login --email ${{ secrets.JIRA_USER }} --token ${{ secrets.JIRA_TOKEN }} --non-interactive
         env:
           FORGE_CLI_NONINTERACTIVE: 1
+          FORGE_EMAIL: "${{ secrets.JIRA_USER }}"
+          FORGE_API_TOKEN: "${{ secrets.JIRA_TOKEN }}"
       
       # Step 2: Forge deploy to the chosen environment
       - name: Forge Deploy
         run: forge deploy --environment ${{ vars.ENV_NAME }}
         env:
           FORGE_CLI_NONINTERACTIVE: 1
+          FORGE_EMAIL: "${{ secrets.JIRA_USER }}"
+          FORGE_API_TOKEN: "${{ secrets.JIRA_TOKEN }}"
       
       # Step 3: Forge install with --upgrade argument
       - name: Forge Install
         run: forge install --upgrade --environment ${{ vars.ENV_NAME }} --site ${{ vars.JIRA_SITE_NAME }} --product Jira --non-interactive
         env:
           FORGE_CLI_NONINTERACTIVE: 1
+          FORGE_EMAIL: "${{ secrets.JIRA_USER }}"
+          FORGE_API_TOKEN: "${{ secrets.JIRA_TOKEN }}"
