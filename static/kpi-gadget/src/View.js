@@ -65,7 +65,7 @@ function View() {
         .trend-up{color:#22c55e}
         .trend-down{color:#ef4444}
         .trend-stable{color:#eab308}
-        .progress-bar{width:100%;height:6px;background:#e2e8f0;border-radius:3px;margin-top:12px;overflow:hidden}
+        .progress-bar{width:100%;height:6px;background:#e2e8f0;border-radius:3px;margin-top:12px;overflow:hidden;display:none !important}
         .progress-fill{height:100%;border-radius:3px}
         .progress-fill.green{background:#22c55e}
         .progress-fill.blue{background:#3b82f6}
