@@ -10,13 +10,28 @@ function Edit() {
   const [data, setData] = useState(null);
 
   useEffect(() => {
-    invoke('getConfig').then(setData);
+    invoke('getConfig')
+      .then(setData)
+      .catch(err => {
+        console.error('Failed to load config:', err);
+      });
   }, []);
 
+  // Initialize default values for all form fields
   let labelValue = "";
+  let valueValue = "";
+  let unitValue = "";
+  let trendValue = "";
+  let targetValue = "";
+
   if (data) {
-    labelValue = data["label"];
+    labelValue = data["label"] || "";
+    valueValue = data["value"] || "";
+    unitValue = data["unit"] || "";
+    trendValue = data["trend"] || "";
+    targetValue = data["target"] || "";
   }
+
   return (
     <Form onSubmit={onSubmit}>
       {({ formProps, submitting }) => (
@@ -25,19 +40,19 @@ function Edit() {
             {({ fieldProps }) => <TextField {...fieldProps} />}
           </Field>
           <br/>
-          <Field name="value" label="Value">
+          <Field name="value" label="Value" defaultValue={valueValue}>
             {({ fieldProps }) => <TextField {...fieldProps} />}
           </Field>
           <br/>
-          <Field name="unit" label="Unit's label">
+          <Field name="unit" label="Unit's label" defaultValue={unitValue}>
             {({ fieldProps }) => <TextField {...fieldProps}  />}
           </Field>
           <br/>
-          <Field name="trend" label="Trend">
+          <Field name="trend" label="Trend" defaultValue={trendValue}>
             {({ fieldProps }) => <TextField {...fieldProps}  />}
           </Field>
           <br/>
-          <Field name="target" label="Target">
+          <Field name="target" label="Target" defaultValue={targetValue}>
             {({ fieldProps }) => <TextField {...fieldProps}  />}
           </Field>
           <br/>
