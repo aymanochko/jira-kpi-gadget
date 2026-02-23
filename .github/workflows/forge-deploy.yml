@@ -28,7 +28,7 @@ jobs:
 
       # Step 1: Build the react front
       - name: Build REACT Front
-        run: cd static/kpi-gadget && npm install --legacy-peer-deps && npm run-script build
+        run: currentDir=`pwd` && cd static/kpi-gadget && npm install --legacy-peer-deps && npm run-script build && cd $currentDir
         env:
           FORGE_CLI_NONINTERACTIVE: 1
       
