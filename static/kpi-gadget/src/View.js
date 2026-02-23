@@ -1,6 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { view, invoke } from '@forge/bridge';
 
+// Utility function to decode HTML entities (e.g., &eacute; → é)
+function decodeHtmlEntities(text) {
+  if (!text) return text;
+  const textarea = document.createElement('textarea');
+  textarea.innerHTML = text;
+  return textarea.value;
+}
+
 function View() {
   const [context, setContext] = useState();
   const [data, setData] = useState(null);
@@ -57,15 +65,15 @@ function View() {
       `}</style>
       {/* --- Ton HTML KPI --- */}
       <div className="kpi-card agile-metric">
-      <div className="kpi-label">{data["label"] ? data["label"] : "Edit me"}</div>
+      <div className="kpi-label">{data["label"] ? decodeHtmlEntities(data["label"]) : "Edit me"}</div>
         <div className="kpi-value-container">
-          <span className="kpi-value">{data["value"] ? data["value"] : "Edit me"}</span>
-          <span className="kpi-unit">{data["unit"] ? data["unit"] : "Edit me"}</span>
+          <span className="kpi-value">{data["value"] ? decodeHtmlEntities(data["value"]) : "Edit me"}</span>
+          <span className="kpi-unit">{data["unit"] ? decodeHtmlEntities(data["unit"]) : "Edit me"}</span>
         </div>
 
         <div className="kpi-meta">
           <div className="kpi-target">
-            Objectif: <span>{data["target"] ? data["target"] : "Edit me"}</span> {data["unit"] ? data["unit"] : "Edit me"}
+            Objectif: <span>{data["target"] ? decodeHtmlEntities(data["target"]) : "Edit me"}</span> {data["unit"] ? decodeHtmlEntities(data["unit"]) : "Edit me"}
           </div>
           <div className="trend-indicator">{data["trend"] ? data["trend"] : "Edit me"}</div>
         </div>
