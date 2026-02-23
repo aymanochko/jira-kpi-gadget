@@ -4,8 +4,34 @@ import TextField from '@atlaskit/textfield';
 import Button, { ButtonGroup } from '@atlaskit/button';
 import { view, invoke } from '@forge/bridge';
 
+// Utility function to decode HTML entities (e.g., &eacute; → é)
+function decodeHtmlEntities(text) {
+  if (!text) return text;
+  const textarea = document.createElement('textarea');
+  textarea.innerHTML = text;
+  return textarea.value;
+}
+
+// Utility function to encode HTML entities (e.g., é → &eacute;)
+function encodeHtmlEntities(text) {
+  if (!text) return text;
+  const textarea = document.createElement('textarea');
+  textarea.textContent = text;
+  return textarea.innerHTML;
+}
+
 function Edit() {
-  const onSubmit = (formData) => view.submit(formData);
+  const onSubmit = (formData) => {
+    // Encode HTML entities before submitting to prevent Jira from double-encoding
+    const encodedData = {
+      label: encodeHtmlEntities(formData.label),
+      value: encodeHtmlEntities(formData.value),
+      unit: encodeHtmlEntities(formData.unit),
+      trend: encodeHtmlEntities(formData.trend),
+      target: encodeHtmlEntities(formData.target),
+    };
+    view.submit(encodedData);
+  };
   const [context, setContext] = useState();
   const [data, setData] = useState(null);
 
@@ -25,11 +51,11 @@ function Edit() {
   let targetValue = "";
 
   if (data) {
-    labelValue = data["label"] || "";
-    valueValue = data["value"] || "";
-    unitValue = data["unit"] || "";
-    trendValue = data["trend"] || "";
-    targetValue = data["target"] || "";
+    labelValue = decodeHtmlEntities(data["label"]) || "";
+    valueValue = decodeHtmlEntities(data["value"]) || "";
+    unitValue = decodeHtmlEntities(data["unit"]) || "";
+    trendValue = decodeHtmlEntities(data["trend"]) || "";
+    targetValue = decodeHtmlEntities(data["target"]) || "";
   }
 
   return (
