@@ -1,0 +1,27 @@
+modules:
+  jira:dashboardGadget:
+    - key: kpi-gadget
+      title: kpi-gadget
+      description: A KPI dashboard gadget.
+      thumbnail: https://developer.atlassian.com/platform/forge/images/icons/issue-panel-icon.svg
+      resource: main
+      resolver:
+        function: resolver
+      edit:
+        resource: main
+  function:
+    - key: resolver
+      handler: index.handler
+resources:
+  - key: main
+    path: static/kpi-gadget/build
+permissions:
+  content:
+    styles:
+      - unsafe-inline
+app:
+  runtime:
+    name: nodejs24.x
+    memoryMB: 256
+    architecture: arm64
+  id: ari:cloud:ecosystem::app/12cd2c4f-9fbb-429e-b164-a42457598089
