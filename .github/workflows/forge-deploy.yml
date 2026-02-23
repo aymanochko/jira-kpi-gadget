@@ -19,7 +19,12 @@ jobs:
       
       - name: Install Forge CLI
         run: npm install -g @forge/cli
-      
+
+      # Step 0: Forge settings 
+      - name: Forge Settings
+        run: forge settings set usage-analytics false
+        env:
+          FORGE_CLI_NONINTERACTIVE: 1
       # Step 1: Forge login with JIRA User and JIRA Token
       - name: Forge Login
         run: forge login --email ${{ secrets.JIRA_USER }} --token ${{ secrets.JIRA_TOKEN }} --non-interactive
