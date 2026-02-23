@@ -9,6 +9,16 @@ function decodeHtmlEntities(text) {
   return textarea.value;
 }
 
+// Get trend display properties based on trend value
+function getTrendDisplay(trend) {
+  const trendMap = {
+    'up': { arrow: '↑', label: 'Hausse', className: 'trend-up' },
+    'down': { arrow: '↓', label: 'Baisse', className: 'trend-down' },
+    'stable': { arrow: '→', label: 'Stable', className: 'trend-stable' },
+  };
+  return trendMap[trend] || { arrow: '', label: trend, className: '' };
+}
+
 function View() {
   const [context, setContext] = useState();
   const [data, setData] = useState(null);
@@ -25,6 +35,10 @@ function View() {
     return 'Loading...';
   }
 
+  // Get trend display properties
+  const trendValue = decodeHtmlEntities(data["trend"]);
+  console.log("Tred : "+ data["trend"])
+  const trendDisplay = getTrendDisplay(trendValue);
 
   return (
     
@@ -33,7 +47,7 @@ function View() {
       <style>{`
         .kpi-card{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Oxygen,Ubuntu,sans-serif;display:inline-block;background:#fff;border-radius:12px;padding:20px;min-width:220px;box-shadow:0 2px 8px rgba(0,0,0,.1);border-left:4px solid #3b82f6;box-sizing:border-box}
         .kpi-card.ai-metric{border-left-color:#a855f7}
-        .kpi-card.agile-metric{border-left-color:#3b82f6;min-width: 350px}
+        .kpi-card.agile-metric{border-left-color:#3b82f6;min-width: 350px;margin: 5px}
         .kpi-card.quality-metric{border-left-color:#22c55e}
         .kpi-card.dark{background:#1e293b}
         .kpi-card.dark .kpi-label,.kpi-card.dark .kpi-unit,.kpi-card.dark .kpi-target{color:#94a3b8}
@@ -75,7 +89,9 @@ function View() {
           <div className="kpi-target">
             Objectif: <span>{data["target"] ? decodeHtmlEntities(data["target"]) : "Edit me"}</span> {data["unit"] ? decodeHtmlEntities(data["unit"]) : "Edit me"}
           </div>
-          <div className="trend-indicator">{data["trend"] ? data["trend"] : "Edit me"}</div>
+          <div className={`trend-indicator ${trendDisplay.className}`}>
+            {trendValue ? `${trendDisplay.arrow} ${trendDisplay.label}` : 'Edit me'}
+          </div>
         </div>
 
         <div className="progress-bar">

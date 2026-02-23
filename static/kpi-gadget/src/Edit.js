@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Form, { Field } from '@atlaskit/form';
 import TextField from '@atlaskit/textfield';
+import Select from '@atlaskit/select';
 import Button, { ButtonGroup } from '@atlaskit/button';
 import { view, invoke } from '@forge/bridge';
 
@@ -20,14 +21,26 @@ function encodeHtmlEntities(text) {
   return textarea.innerHTML;
 }
 
+// Trend options for the select field (French translations)
+const trendOptions = [
+  { label: 'Hausse', value: 'up' },
+  { label: 'Baisse', value: 'down' },
+  { label: 'Stable', value: 'stable' },
+];
+
 function Edit() {
   const onSubmit = (formData) => {
     // Encode HTML entities before submitting to prevent Jira from double-encoding
+    // Handle trend field which is now a Select component (object with label/value)
+    const trendValue = formData.trend && typeof formData.trend === 'object' 
+      ? formData.trend.value 
+      : formData.trend;
+    
     const encodedData = {
       label: encodeHtmlEntities(formData.label),
       value: encodeHtmlEntities(formData.value),
       unit: encodeHtmlEntities(formData.unit),
-      trend: encodeHtmlEntities(formData.trend),
+      trend: encodeHtmlEntities(trendValue),
       target: encodeHtmlEntities(formData.target),
     };
     view.submit(encodedData);
@@ -58,6 +71,9 @@ function Edit() {
     targetValue = decodeHtmlEntities(data["target"]) || "";
   }
 
+  // Get the selected option for the trend field
+  const selectedTrendOption = trendOptions.find(option => option.value === trendValue) || null;
+
   return (
     <Form onSubmit={onSubmit}>
       {({ formProps, submitting }) => (
@@ -71,15 +87,21 @@ function Edit() {
           </Field>
           <br/>
           <Field name="unit" label="Unit's label" defaultValue={unitValue}>
-            {({ fieldProps }) => <TextField {...fieldProps}  />}
+            {({ fieldProps }) => <TextField {...fieldProps} />}
           </Field>
           <br/>
-          <Field name="trend" label="Trend" defaultValue={trendValue}>
-            {({ fieldProps }) => <TextField {...fieldProps}  />}
+          <Field name="trend" label="Trend" defaultValue={selectedTrendOption}>
+            {({ fieldProps }) => (
+              <Select
+                {...fieldProps}
+                options={trendOptions}
+                placeholder="Sélectionner une tendance"
+              />
+            )}
           </Field>
           <br/>
           <Field name="target" label="Target" defaultValue={targetValue}>
-            {({ fieldProps }) => <TextField {...fieldProps}  />}
+            {({ fieldProps }) => <TextField {...fieldProps} />}
           </Field>
           <br/>
           <ButtonGroup>
