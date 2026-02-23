@@ -34,7 +34,7 @@ jobs:
       
       # Step 2: Forge deploy to the chosen environment
       - name: Forge Deploy
-        run: forge deploy --environment ${{ vars.ENV_NAME }}
+        run: npm install --legacy-peer-deps && forge deploy --environment ${{ vars.ENV_NAME }}
         env:
           FORGE_CLI_NONINTERACTIVE: 1
           FORGE_EMAIL: "${{ secrets.JIRA_USER }}"
